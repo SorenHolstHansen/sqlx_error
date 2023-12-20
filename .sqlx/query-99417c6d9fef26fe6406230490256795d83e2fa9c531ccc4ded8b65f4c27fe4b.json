@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT\n            da.data_set_id,\n            CASE\n                WHEN container.container_id IS NOT NULL THEN container.container_id\n                WHEN platform.id IS NOT NULL THEN platform.id\n                ELSE NULL\n            END AS reference_id,\n            w.title as workspace_name,\n            b.type as warehouse_type\n        FROM data_set_metadata AS da\n        INNER JOIN data_set AS ds\n            ON da.data_set_id = ds.id\n        INNER JOIN workspace AS w\n            ON da.workspace_id = w.id\n        INNER JOIN warehouse AS wm\n            ON da.workspace_id = wm.workspace_id\n        INNER JOIN box AS b\n            ON wm.box_id = b.id\n        LEFT JOIN container_data_set_bridge AS container\n            ON container.data_set_id = ds.id\n        LEFT JOIN platform\n            ON platform.data_set_id = ds.id\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "data_set_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "reference_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "workspace_name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "warehouse_type",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      null,
+      false,
+      false
+    ]
+  },
+  "hash": "99417c6d9fef26fe6406230490256795d83e2fa9c531ccc4ded8b65f4c27fe4b"
+}
